@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.integrate as spi
+import timeit
 
 def monte_carlo_integrate(func, a, b, y_min, y_max, num_points):
   x = np.random.uniform(a, b, num_points)
@@ -40,6 +41,7 @@ ax.set_ylim([0, max(y) + 0.1])
 ax.set_xlabel('x')
 ax.set_ylabel('f(x)')
 
+# Візуалізація рандомних точок для наглядності
 num_points = 100
 dots_x = np.random.uniform(a, b, num_points)
 dots_y = np.random.uniform(y_min, y_max, num_points)
@@ -56,3 +58,9 @@ result, err = spi.quad(f, a, b)
 mc_result = monte_carlo_integrate(f, a, b, y_min, y_max, 1_000_000)
 print(f"quad - {result}")
 print(f"monte_carlo - {mc_result}")
+
+quad_time = timeit.timeit(lambda: spi.quad(f, a, b), number=100)
+monte_carlo_time = timeit.timeit(lambda: monte_carlo_integrate(f, a, b, y_min, y_max, 1_000_000), number=100)
+
+print(f"quad_time - {quad_time}")
+print(f"monte_carlo_time - {monte_carlo_time}")
